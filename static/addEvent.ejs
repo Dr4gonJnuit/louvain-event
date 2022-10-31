@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('partials/head.ejs'); %>
+    </head>
+    
+    <body>
+        <header>
+            <%- include('partials/header.ejs'); %>
+        </header>     </br>     </br>
+        
+        
+
+<h1>Add an event</h1>
+<form action="newEvent" method="post">
+    <table id="newEvent" width="80%" height="500" border="1">
+        <tr>
+            <td width="450px">Event: <input name="event" type="text" style="width: 250px;"></td>
+            <td rowspan="7">Description de l'événement: <textarea name="description" rows="20" cols="120"></textarea></td>
+        </tr>
+        <tr>
+            <td>Location: <input name="adresse" type="text" style="width: 230px;"></td></td>
+        </tr>
+        <tr>
+            <td>Date: <input name="date" type="date" style="width: 150px;"></td></td>
+        </tr>
+        
+    </table>
+	</br>
+    <button type="submit" form="newEvent">Enregistrer</input>
+</form>
+
+</body>
+</html>
