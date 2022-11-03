@@ -3,4 +3,5 @@ This is the group projet we have to do in the course of Projet d'approfondisseme
 
 
 TO DO
+
 On sait qu'il faut lier la base de donnée, faire la session (les cookies)
