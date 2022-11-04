@@ -33,7 +33,10 @@ User.init({
         type: DataTypes.TEXT,
         allowNull: false
     }
-}, { sequelize });
+}, {
+    sequelize,
+    modelName: 'User'
+});
 
 User_Email.init({
     mail: {
@@ -45,7 +48,26 @@ User_Email.init({
             key: 'name'
         }
     }
-}, { sequelize });
+}, {
+    sequelize,
+    modelName: 'User_Email'
+});
+
+Event.init({
+    title: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        primaryKey: true
+    },
+    descr: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        primaryKey: true
+    }
+}, {
+    sequelize,
+    modelName: 'Event'
+});
 
 User_Post.init({
     name: {
@@ -63,20 +85,10 @@ User_Post.init({
             key: 'title'
         }
     }
-}, { sequelize });
-
-Event.init({
-    title: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        primaryKey: true
-    },
-    descr: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        primaryKey: true
-    }
-}, { sequelize });
+}, {
+    sequelize,
+    modelName: 'User_Post'
+});
 
 Event_Loc.init({
     title: {
@@ -91,7 +103,10 @@ Event_Loc.init({
         type: DataTypes.TEXT,
         allowNull: false
     }
-}, { sequelize });
+}, {
+    sequelize,
+    modelName: 'Event_Loc'
+});
 
 Event_Date.init({
     title: {
@@ -107,7 +122,10 @@ Event_Date.init({
         type: DataTypes.DATE,
         allowNull: false
     }
-}, { sequelize })
+}, {
+    sequelize,
+    modelName: 'Event_Date'
+});
 
 Loc_Date.init({
     loc: {
@@ -128,4 +146,9 @@ Loc_Date.init({
             key: 'pst_date'
         }
     }
-}, { sequelize })
+}, {
+    sequelize,
+    modelName: 'Loc_Date'
+});
+
+sequelize.sync();
