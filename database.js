@@ -1,6 +1,7 @@
 // Import Sequelize
 const { name } = require('ejs');
 const { Sequelize, DataTypes, Model, TEXT } = require('sequelize')
+var db = {};
 
 // Creation of database link
 const sequelize = new Sequelize({
@@ -39,10 +40,19 @@ User.init({
 });
 
 User_Email.init({
+    id : {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        unique: true,
+    },
     mail: {
         type: DataTypes.TEXT,
         allowNull: false,
         unique: true,
+    },
+    user_name: {
+        type: DataTypes.TEXT,
         references: {
             model: User,
             key: 'name'
@@ -150,5 +160,27 @@ Loc_Date.init({
     sequelize,
     modelName: 'Loc_Date'
 });
+  
+User.hasMany(User_Email);
 
-sequelize.sync();
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+db.user = User;
+db.user_email = User_Email;
+
+
+
+//
+/*
+(async () => {
+    await db.sequelize.sync({ force: true });
+  });//*/
+
+//
+db.sequelize.sync({force: true});  
+
+
+
+
+module.exports = db;
+
