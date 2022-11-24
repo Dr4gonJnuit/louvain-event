@@ -83,16 +83,12 @@ app.get('/', function (req, res) {
 app.get('/login', function (req, res) {
 
     if (req.session.username) {
-        res.render('login', {
-            year: date,
-            logine: req.session.username + " (Disconnect)",
-        });
-    } else {
-        res.render('login', {
-            year: date,
-            logine: "Login/Register"
-        });
+        req.session.username = null;
     }
+    res.render('login', {
+        year: date,
+        logine: "Login/Register"
+    });
     
 });
 
