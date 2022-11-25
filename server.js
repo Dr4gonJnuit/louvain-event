@@ -1,13 +1,3 @@
-/*
-* Faite rechercher :
-* deplacer = prendre la fonction et la mettre autre par
-* utiliter = p-t a retirer
-*/
-
-
-
-
-
 // load the things we need
 var express = require('express');
 var session = require('express-session');
@@ -15,9 +5,6 @@ var app = express();
 var bodyParser = require("body-parser");
 var https = require('https');
 var fs = require('fs');
-var vm = require('vm');     // utiliter
-
-
 
 // loading and using sessions
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,10 +19,11 @@ app.use(session({
     }
 }));
 
-
-
 // loading DataBase 
 const dbs = require("./database.js");
+const { text } = require('express');
+const { title } = require('process');
+const { stringify } = require('querystring');
 
 
 // testing connection on DB
@@ -60,23 +48,50 @@ var date = " " + ajd.getDate() + " " + months[ajd.getMonth()] + " " + ajd.getFul
 
 
 // home page
-app.get('/', function (req, res) {
+app.get('/', async (req, res) => {
 
     let noti = req.session.notif;
+
+    const dtitle = await dbs.event.findAll({
+        attributes: ['title']
+    });
+    const ddescr = await dbs.event.findAll({
+        attributes: ['descr']
+    });
+    const dloc = await dbs.event.findAll({
+        attributes: ['loc']
+    });
+    const ddate = await dbs.event.findAll({
+        attributes: ['pst_date']
+    });
+
+    let titleEvents = JSON.stringify(dtitle, null, 2);
+    let descrEvents = JSON.stringify(ddescr, null, 2);
+    let locEvents = JSON.stringify(dloc, null, 2);
+    let dateEvents = JSON.stringify(ddate, null, 2);
+
     if (req.session.username) {
         res.render('home', {
             year: date,
             logine: req.session.username + " (Disconnect)",
-            notif: noti
+            notif: noti,
+            tevents: titleEvents,
+            devents: descrEvents,
+            levents: locEvents,
+            daevents: dateEvents            
         });
+        
     } else {
         res.render('home', {
             year: date,
             logine: "Login/Register",
-            notif: noti
+            notif: noti,
+            tevents: titleEvents,
+            devents: descrEvents,
+            levents: locEvents,
+            daevents: dateEvents
         });
     }
-
 });
 
 // login page
@@ -89,7 +104,6 @@ app.get('/login', function (req, res) {
         year: date,
         logine: "Login/Register"
     });
-    
 });
 
 // connexion
@@ -166,6 +180,7 @@ app.get('/addEvent', function (req, res) {
 });
 
 app.post('/newEvent', async (req, res) => {
+    
     const event = await dbs.event.findOne({where: { title: req.body.event } });
     console.log(event);
     const description = await dbs.description.findOne({where: { descr: req.body.description } });
@@ -175,18 +190,24 @@ app.post('/newEvent', async (req, res) => {
     const date = await dbs.date.findOne({where: { pst_date: req.body.date } });
     console.log(date);
 
-    if (event === null) {
-        let newEvent = await dbs.event.create({ 
-            title: req.body.event, 
-            descr: req.body.description,
-            loc: req.body.adresse,
-            pst_date: req.body.date
-        });
-        console.log('Event ajouté')
-        res.redirect('/');
+    if (req.session.username) {
+
+        if (event === null) {
+            let newEvent = await dbs.event.create({ 
+                title: req.body.event, 
+                descr: req.body.description,
+                loc: req.body.adresse,
+                pst_date: req.body.date
+            });
+            console.log('Event ajouté')
+            res.redirect('/');
+        } else {
+            req.session.notif = "L'évènement existe déjà.";
+            console.log('name error');
+        }
     } else {
-        req.session.notif = "L'evènement existe déjà.";
-        console.log('name error');
+        req.session.notif = "Vous n'êtes pas connecté.";
+        console.log('Erreur session');
     }
 });
 

@@ -11,28 +11,18 @@
         
         <main>
             
-            <table class="table"  width="100%"> 
+            <table class="table" id="events" width="100%"> 
                 <caption class = "captionglobal"><h3>Liste des évènements à venir</h3></caption>
                 <tr>
+                    <th>Nom</th>
                     <th>Description</th>
                     <th>Adresse</th>
-                    <th>Age</th>
                     <th>Date</th>
-                </tr>
-                <tr>
-                    <td>Soirée petanque</td>    
-                    <td>Salle de petanque</td>
-                    <td>8 ans </td>
-                    <td>07/10/2019</td>
-                </tr>
-                <tr>
-                    <td>{{description}}</td>    
-                    <td>{{adresse}}</td>
-                    <td>{{age}} </td>
-                    <td>{{date}}</td>
                 </tr>
             </table>
             
+            <%= tevents %> <%= devents %> <%= levents %> <%= daevents %>  
+
         </main>
 
     </body>
