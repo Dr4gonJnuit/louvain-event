@@ -73,6 +73,14 @@ Event.init({
         type: DataTypes.TEXT,
         allowNull: false,
         primaryKey: true
+    },
+    loc: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    pst_date: {
+        type: DataTypes.DATE,
+        allowNull: false
     }
 }, {
     sequelize,
@@ -99,67 +107,6 @@ User_Post.init({
     sequelize,
     modelName: 'User_Post'
 });
-
-Event_Loc.init({
-    title: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        references: {
-            model: Event,
-            key: 'title'
-        }
-    },
-    loc: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    }
-}, {
-    sequelize,
-    modelName: 'Event_Loc'
-});
-
-Event_Date.init({
-    title: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        primaryKey: true,
-        references: {
-            model: Event,
-            key: 'title'
-        }
-    },
-    pst_date: {
-        type: DataTypes.DATE,
-        allowNull: false
-    }
-}, {
-    sequelize,
-    modelName: 'Event_Date'
-});
-
-Loc_Date.init({
-    loc: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        unique: true,
-        references: {
-            model: Event_Loc,
-            key: 'loc'
-        }
-    },
-    pst_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        unique: true,
-        references: {
-            model: Event_Date,
-            key: 'pst_date'
-        }
-    }
-}, {
-    sequelize,
-    modelName: 'Loc_Date'
-});
   
 User.hasMany(User_Email);
 
@@ -167,20 +114,15 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.user = User;
 db.user_email = User_Email;
+db.event = Event;
+db.description = Event;
+db.location = Event;
+db.date = Event;
 
 
 
-//
-/*
-(async () => {
-    await db.sequelize.sync({ force: true });
-  });//*/
-
-//
 db.sequelize.sync({force: true});  
 
 
 
-
 module.exports = db;
-
