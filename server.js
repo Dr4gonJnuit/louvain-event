@@ -151,6 +151,7 @@ app.post('/newUser', async (req, res) => {
 
 // addEvent page
 app.get('/addEvent', function (req, res) {
+
     if (req.session.username) {
         res.render('addEvent', {
             year: date,
@@ -163,6 +164,32 @@ app.get('/addEvent', function (req, res) {
         });
     }
 });
+
+app.post('/newEvent', async (req, res) => {
+    const event = await dbs.event.findOne({where: { title: req.body.event } });
+    console.log(event);
+    const description = await dbs.description.findOne({where: { descr: req.body.description } });
+    console.log(description);
+    const location = await dbs.location.findOne({where: { loc: req.body.adresse } });
+    console.log(location);
+    const date = await dbs.date.findOne({where: { pst_date: req.body.date } });
+    console.log(date);
+
+    if (event === null) {
+        let newEvent = await dbs.event.create({ 
+            title: req.body.event, 
+            descr: req.body.description,
+            loc: req.body.adresse,
+            pst_date: req.body.date
+        });
+        console.log('Event ajouté')
+        res.redirect('/');
+    } else {
+        req.session.notif = "L'evènement existe déjà.";
+        console.log('name error');
+    }
+});
+
 
 // create the server
 https.createServer({
