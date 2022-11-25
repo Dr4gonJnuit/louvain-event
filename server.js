@@ -25,7 +25,6 @@ const { text } = require('express');
 const { title } = require('process');
 const { stringify } = require('querystring');
 
-
 // testing connection on DB
 try {
     dbs.sequelize.authenticate();
@@ -39,13 +38,10 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/static');
 app.use(express.static(__dirname + '/static'));
 
-
-// deplacer ?
+// setup the date
 var ajd = new Date();
 var months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 var date = " " + ajd.getDate() + " " + months[ajd.getMonth()] + " " + ajd.getFullYear();
-//
-
 
 // home page
 app.get('/', async (req, res) => {
@@ -80,7 +76,6 @@ app.get('/', async (req, res) => {
             levents: locEvents,
             daevents: dateEvents            
         });
-        
     } else {
         res.render('home', {
             year: date,
@@ -127,7 +122,6 @@ app.post('/connect', async (req, res) => {
         req.session.notif = "Nom d'utilisateur ou/et mot de passe erroné.";
         res.redirect("/login");
     }
-
 });
 
 // regitering
@@ -140,11 +134,10 @@ app.post('/newUser', async (req, res) => {
 
     // verify username
     if (user === null) {
-
         // verify Email
         if (email === null) {
             let newUser = await dbs.user.create({ name: req.body.username, pswd: req.body.password });
-            console.log("c est bon 2 : " + newUser.name);
+            console.log("none error : " + newUser.name);
             await dbs.user_email.create({ mail: req.body.email, user_name: newUser.name });
             req.session.username = req.body.username;
             req.session.notif = "Bienvenue sur notre site " + req.session.username + " !";
@@ -179,6 +172,7 @@ app.get('/addEvent', function (req, res) {
     }
 });
 
+// adding event to the db
 app.post('/newEvent', async (req, res) => {
     
     const event = await dbs.event.findOne({where: { title: req.body.event } });
@@ -191,7 +185,7 @@ app.post('/newEvent', async (req, res) => {
     console.log(date);
 
     if (req.session.username) {
-
+        
         if (event === null) {
             let newEvent = await dbs.event.create({ 
                 title: req.body.event, 
@@ -210,7 +204,6 @@ app.post('/newEvent', async (req, res) => {
         console.log('Erreur session');
     }
 });
-
 
 // create the server
 https.createServer({

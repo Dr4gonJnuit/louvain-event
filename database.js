@@ -17,12 +17,6 @@ class User_Post extends Model{}
 
 class Event extends Model{}
 
-class Event_Loc extends Model{}
-
-class Event_Date extends Model{}
-
-class Loc_Date extends Model{}
-
 User.init({
     name: {
         type: DataTypes.TEXT,
