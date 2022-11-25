@@ -1,0 +1,11 @@
+<script>
+    let d = new Date();
+    let hour = d.getHours();
+    if (hour > 20 || hour < 8) {
+        document.querySelector("body").style.backgroundColor = "darkblue";
+        document.querySelector("body").style.color = "white";
+    } else {
+        document.querySelector("body").style.backgroundColor = "";
+        document.querySelector("body").style.color = "";
+    }
+</script>
